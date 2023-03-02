@@ -1,0 +1,52 @@
+---
+# tasks file for lighthouse-role
+- name: Install Nginx 
+      become: true
+      yum:
+        name: nginx
+        state: present
+      notify: Start nginx service
+    - name: Install git | Install Nginx
+      become: true
+      yum:
+        name: git
+        state: present
+      notify: Start nginx service
+    - name: Create Nginx config | Install Nginx
+      become: true
+      template:
+        src: nginx.j2
+        dest: /etc/nginx/nginx.conf
+        mode: 0644
+      notify: Start nginx service
+    - name: Create Nginx config lighthouse | Install Nginx
+      become: true
+      template:
+        src: lighthouse.j2
+        dest: /etc/nginx/conf.d/lighthouse.conf
+        mode: 0644
+      notify: Start nginx service
+    - name: Start Nginx
+      become: true
+      ansible.builtin.systemd:
+        name: nginx
+        state: started
+    - name: Autorun Nginx
+      become: true
+      ansible.builtin.systemd:
+        name: nginx
+        enabled: true
+    - name: Create directory
+      become: true
+      ansible.builtin.file:
+        path: /var/www/lighthouse
+        state: directory
+        owner: nginx
+        group: nginx
+        mode: "0755"
+    - name: Copy lighthouse from git
+      git:
+        repo: "{{ lighthouse_vcs }}"
+        version: master
+        dest: "/var/www/lighthouse"
+      become: true
