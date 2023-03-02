@@ -1,36 +1,39 @@
-Role Name
+Role lighthouse-role
 =========
 
-A brief description of the role goes here.
+Role can install lighthouse and nginx, git.
+Create nginx config.
+Create lighthouse config.
 
 Requirements
 ------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Git, nginx. Если в системе нет этих сервисов, тогда роль установит их.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+|Переменная|Описание| 
+|-|--------|
+Переменные для установки кредов default/main.yml:
+|lighthouse_vcs|ссылка на репозиторий git lighthouse|
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+Требуется роль clickhouse-role <br/>
+[https://github.com/awertoss/clickhouse-role]
 
 Example Playbook
 ----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
+```
+hosts: lighthouse
+roles:
+  - role: lighthouse-role
+```
 License
 -------
 
-BSD
+MIT
 
 Author Information
 ------------------
